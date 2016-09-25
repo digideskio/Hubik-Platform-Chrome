@@ -1,0 +1,23 @@
+{
+  "name": "Hubik-Platform-Chrome",
+  "version": "0.0.0",
+  "description": "The chrome platform logic of Hubik-Core.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.prod.hulu.com:chen-yang/Hubik-Platform-Chrome.git"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "chrome-remote-interface": "^0.11.0",
+    "es6-promise": "^3.2.1",
+    "is-promise": "^2.1.0",
+    "object-assign": "^4.1.0",
+    "shelljs": "^0.5.3"
+  },
+  "author": "",
+  "license": "MIT"
+}
