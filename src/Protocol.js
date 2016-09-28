@@ -1,5 +1,6 @@
 var CRI = require('chrome-remote-interface'),
     util = require('./util'),
+    Promise = require("es6-promise").Promise,
     objectAssign = require('object-assign');
 
 function Protocol(){
@@ -64,7 +65,12 @@ Protocol.prototype.send = function(args){
     var self = this;
     return new Promise(function(resolve,reject){
         self.instance.send(args.command,args.params,function(err,res){
-            resolve(res);
+            if(!err){
+                resolve(res);
+            }
+            else{
+                reject();
+            }
         });
     });
 };

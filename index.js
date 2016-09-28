@@ -1,4 +1,4 @@
-var Platform = require("../../Hubik-Platform/index"),
+var Platform = require("../Hubik-Platform/index"),
     shell = require("shelljs"),
     util = require("./src/util"),
     Protocol = require("./src/Protocol"),
@@ -69,10 +69,12 @@ module.exports = new Platform("Chrome",function($instance){
     $instance.addInterface("@Initialization.$platform.getName",function(){
         return "chrome";
     });
-    $instance.addInterface("@Navigation&Automation.$runtime.send",function(method,params){
+    $instance.addInterface("@Navigation&Automation.$runtime.send",function(method,params,callback){
         return protocol.send({
             "command": method,
             "params": params
+        }).then(function(res){
+            callback(res);
         });
     });
     $instance.addInterface("@Navigation&Automation.$runtime.addEventListener",function(event,callback){
