@@ -16,8 +16,11 @@ var commands = [
 ];
 
 module.exports = new Platform("Chrome",function($instance){
-    $instance.register("launch",function(){
+    $instance.register("launch",function(config){
         util.log.info("Launch Chrome");
+        if(!!config && config.length > 0){
+            commands.concat(config);
+        }
         return new Promise(function(resolve,reject){
             shell.exec('osascript -e \'quit app "Google Chrome"\'',{silent:true}, function(){
                 util.log.command('osascript -e \'quit app "Google Chrome"\'');
@@ -52,7 +55,6 @@ module.exports = new Platform("Chrome",function($instance){
         return protocol.load(url);
     });
     $instance.register("key",function(params){
-        util.log.info("key "+params.type);
         return ["keyDown","keyUp"].reduce(function(p,v,i){
             return p.then(function(){
                 return protocol.input({
@@ -61,6 +63,17 @@ module.exports = new Platform("Chrome",function($instance){
                 })
             });
         },Promise.resolve());
+    });
+    $instance.register("runtime",function(params){
+        return protocol.send(
+            {
+                "command": "Runtime.evaluate",
+                "params":{
+                    "expression": params.script
+                }
+            }).then(function(res){
+            params.callback(res.result);
+        });
     });
 
     $instance.addInterface("@Initialization.$platform.setCmds",function(cmds){
