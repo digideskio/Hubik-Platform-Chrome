@@ -1,4 +1,4 @@
-var Platform = require("../Hubik-Platform/index"),
+var Platform = require("hubik-platform"),
     shell = require("shelljs"),
     util = require("hubik-util"),
     Protocol = require("./src/Protocol"),
