@@ -1,6 +1,6 @@
 var Platform = require("../Hubik-Platform/index"),
     shell = require("shelljs"),
-    util = require("./src/util"),
+    util = require("hubik-util"),
     Protocol = require("./src/Protocol"),
     Promise = require("es6-promise").Promise;
 

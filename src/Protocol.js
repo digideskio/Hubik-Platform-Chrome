@@ -1,5 +1,5 @@
 var CRI = require('chrome-remote-interface'),
-    util = require('./util'),
+    util = require('hubik-util'),
     Promise = require("es6-promise").Promise,
     objectAssign = require('object-assign');
 
