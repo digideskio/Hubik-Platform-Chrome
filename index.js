@@ -72,8 +72,8 @@ module.exports = new Platform("Chrome",function($instance){
                     "expression": params.script
                 }
             }).then(function(res){
-            params.callback(res.result);
-        });
+                params.callback(res.result);
+            });
     });
 
     $instance.addInterface("@Initialization.$platform.setCmds",function(cmds){
@@ -93,26 +93,37 @@ module.exports = new Platform("Chrome",function($instance){
     $instance.addInterface("@Navigation&Automation.$runtime.addEventListener",function(event,callback){
         protocol.addEventListener(event,callback);
     });
-    $instance.addInterface("@Navigation&Automation.$runtime.timeline",function(callback){
-        var timelineProtocol = protocol.timeline(callback);
+    $instance.addInterface("@Navigation&Automation.$runtime.timeline",function(){
+        var endCallback;
+        var endData = [];
+        var timelineProtocol = protocol.timeline(function(data){
+            if(data.complete && !!endCallback){
+                endCallback(endData)
+            }
+            else{
+                endData.push(data.data)
+            }
+        });
         return {
             start: function(){
+                endData = [];
                 timelineProtocol.start();
             },
-            end: function(){
+            end: function(callback){
+                endCallback = callback
                 timelineProtocol.end(true);
             }
         }
     });
     $instance.addInterface("@Navigation&Automation.$runtime.evaluate",function(code,callback){
         return protocol.send(
-                {
-                    "command": "Runtime.evaluate",
-                    "params":{
-                        "expression": code
-                    }
-                }).then(function(res){
-                    callback(res.result);
-                });
+            {
+                "command": "Runtime.evaluate",
+                "params":{
+                    "expression": code
+                }
+            }).then(function(res){
+                callback(res.result);
+            });
     });
 });
